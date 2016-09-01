@@ -1,6 +1,8 @@
 package com.chess;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * date: 07.07.2016
  */
 
-public class MainScreen implements Screen {
+public class MainScreen implements Screen, InputProcessor {
     SpriteBatch batch;
     GameObject background;
     Board board;
@@ -37,7 +39,10 @@ public class MainScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Gdx.input.setInputProcessor(this);
+
         isclick = true;
+
     }
 
     @Override
@@ -45,22 +50,15 @@ public class MainScreen implements Screen {
 
         batch.begin();
 
-
-
+        sprite.setSize(800,800);
+        sprite.draw(batch);
+        background.draw(batch);
+        board.draw(batch);
+        bp.create(batch);
 
         /*bp.creat();*/
 
 
-        if(isclick) {
-            sprite.setSize(800,800);
-            sprite.draw(batch);
-            background.draw(batch);
-            board.draw(batch);
-            bp.create(batch);
-        }
-
-        isclick =bp.click(isclick);
-        bp.update(batch);
 
 
 
@@ -74,14 +72,7 @@ public class MainScreen implements Screen {
     }
 
 
-    public float[] findPossition(){
-        possition = new float[2];
-        x = Gdx.input.getX();
-        y= Gdx.input.getY();
-        possition[0] = x;
-        possition[1] = 800 - y;
-        return possition;
-    }
+
 
 
 
@@ -107,6 +98,54 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
 
+    }
+
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(button == Input.Buttons.LEFT) {
+
+
+            System.out.println("Pozycja 2: " +screenX + " , "+screenY);
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

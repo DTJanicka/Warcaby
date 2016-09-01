@@ -43,7 +43,7 @@ public abstract class Piece extends GameObject {
 
     public void draw(Batch batch, GameObject go, float x, float y){}
 
-    public abstract GameObject checkPosition();
+    public abstract GameObject checkPosition(int x, int y);
 
 
 }

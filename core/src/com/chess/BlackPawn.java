@@ -1,6 +1,5 @@
 package com.chess;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 /**
@@ -31,14 +30,15 @@ public class BlackPawn extends Piece {
     public void create(Batch batch){
 
         y= 0;
-        for(int j = 1; j <2; j++) {
-            if(j%2==1){
+        for(int j = 1; j <=2; j++) {
+            if(j==1){
+                x=0;
             for (int i = 0; i < 4; i++) {
             /*pawn[i].setPosition(x, 100);
             pawn[i].setSize(100,100);
             pawn[i].draw(batch);*/
 
-                    x=0;
+
                     draw(batch, blackpawn[i], x, y);
                     x = x + 200;
                 }
@@ -62,9 +62,10 @@ public class BlackPawn extends Piece {
 
     }
 
-    public GameObject checkPosition()
+
+    public GameObject checkPosition(int x, int y)
     {
-        float[] position = ms.findPossition();
+
         for(int i = 0; i < 8; i++) {
             xp = blackpawn[i].getX();
             yp = blackpawn[i].getY();
@@ -72,9 +73,9 @@ public class BlackPawn extends Piece {
             System.out.println("x2: " + (xp + 100));
             System.out.println("y1: " + yp);
             System.out.println("y2: " + (yp + 100));
-            System.out.println("position0: " + position[0]);
-            System.out.println("position1: " + position[1]);
-            if (xp < position[0] && position[0] < (xp + 100) && yp < position[1] && position[1] < (yp + 100)) {
+            System.out.println("position0: " + x);
+            System.out.println("position1: " + y);
+            if (xp < x && x < (xp + 100) && yp < y && y < (yp + 100)) {
                 System.out.println("Został kliknięty pionek " + i);
                 return blackpawn[i];
             }
@@ -82,24 +83,44 @@ public class BlackPawn extends Piece {
         return null;
     }
 
-    public void move(Batch batch){
-        if(checkPosition() != null){
-            isclick = Gdx.input.justTouched();
-            if (isclick){
-                float[] position = ms.findPossition();
+
+
+    public void move(Batch batch, int x){
+        /*if(checkPosition() != null){
+
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+
+
+
                 p = checkPosition();
-                p.setPosition(position[0], position[1]);
+                if(x>(xp+100)) {
+                    moveLeft(p, batch);
+                }
+
+                /*p.setPosition(position[0], position[1]);
                 p.setSize(100,100);
                 p.draw(batch);
             }
-        }
-}
+        }*/
+    }
+
+    public void moveLeft(GameObject p, Batch batch){
+        p.setPosition(xp+100, yp+100);
+        p.setSize(100,100);
+        p.draw(batch);
+    }
+
+    public void moveRight() {
+
+    }
 
     public void update(Batch batch) {
-        isclick = Gdx.input.justTouched();
-        if (isclick){
-            move(batch);
-        }
+
+
+
+
+          //  move(batch);
+
     }
 
     public boolean click(boolean bool){
