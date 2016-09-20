@@ -11,6 +11,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class GameObject extends Sprite {
 
+    protected GameObject pawn;
+    protected boolean iswhite;
+    protected boolean ispawn;
+
     public GameObject() {
     }
 

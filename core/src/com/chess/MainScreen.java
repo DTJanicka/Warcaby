@@ -9,41 +9,39 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+
+//import com.badlogic.gdx.graphics.g2d.Sprite;
+
 /**
  * author: Dorota Janicka
  * date: 07.07.2016
  */
 
 public class MainScreen implements Screen, InputProcessor {
-    SpriteBatch batch;
-    GameObject background;
-    Board board;
-    Sprite sprite;
-    BlackPawn bp;
-    float[] possition;
-    int x,y;
-    boolean isclick;
+    private SpriteBatch batch;
+    private Board board;
+    private Sprite sprite;
+    private Game game;
 
+    float[] possition;
+    private int x,y;
 
 
 
 
     @Override
     public void show() {
-        board = new Board();
+        game = new Game();
         batch = new SpriteBatch();
-        background = new GameObject(new Texture(Gdx.files.internal("board.jpg")));
         sprite = new Sprite(new Texture(Gdx.files.internal("board.jpg")));
-
-        bp = new BlackPawn();
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Gdx.input.setInputProcessor(this);
 
-        isclick = true;
-
     }
+
+
 
     @Override
     public void render(float delta) {
@@ -52,29 +50,16 @@ public class MainScreen implements Screen, InputProcessor {
 
         sprite.setSize(800,800);
         sprite.draw(batch);
-        background.draw(batch);
-        board.draw(batch);
-        bp.create(batch);
-
-        /*bp.creat();*/
-
-
-
-
-
-
-
-
+        game.draw(batch);
         batch.end();
 
 
         //board.update(isclick);
+
+
+
+
     }
-
-
-
-
-
 
     @Override
     public void resize(int width, int height) {
@@ -120,15 +105,22 @@ public class MainScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT) {
+
+            if (button == Input.Buttons.LEFT) {
+
+                System.out.println("Pozycja: " + screenX + " , " + (800 - screenY));
+                //bp.checkPosition(screenX,(800-screenY));
+                //board.checkPosition(screenX,(800-screenY));
+                x = screenX;
+                y  = 800 -screenY;
+                game.click(x,y);
+            }
 
 
-            System.out.println("Pozycja 2: " +screenX + " , "+screenY);
+            return false;
 
-        }
-        return false;
+
     }
-
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;

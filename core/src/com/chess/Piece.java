@@ -1,20 +1,15 @@
 package com.chess;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-
 /**
  * @author: DorotaJanicka
  * @since: 19.04.2016
  */
-public abstract class Piece extends GameObject {
-    Texture bpawn;
-    Texture wpawn;
-    GameObject [] blackpawn;
-    GameObject [] whitepawn;
+public class Piece extends GameObject {
 
+    protected boolean white;
+    protected boolean pawn;
 
+/**
     public void creat(){
 
         blackpawn = new GameObject[8];
@@ -22,7 +17,6 @@ public abstract class Piece extends GameObject {
 
 
         bpawn = new Texture(Gdx.files.internal("bpawn.jpg"));
-
         wpawn = new Texture(Gdx.files.internal("wpawn.jpg"));
 
 
@@ -42,8 +36,8 @@ public abstract class Piece extends GameObject {
     }
 
     public void draw(Batch batch, GameObject go, float x, float y){}
+*/
 
-    public abstract GameObject checkPosition(int x, int y);
 
 
 }

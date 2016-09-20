@@ -1,22 +1,19 @@
 package com.chess;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-
 /**
  * @author: DorotaJanicka
  * @since: 07.07.2016
  */
 public class BlackPawn extends Piece {
-    GameObject p;
-    int x, y;
-    float xp, yp;
-    MainScreen ms;
-    boolean isclick;
+    /**
+    private GameObject p;
+    private int x, y;
+    private float xp, yp;
+    private MainScreen ms;
 
     public BlackPawn(){
-        ms = new MainScreen();
+        //ms = new MainScreen();
         creat();
-
     }
 
 
@@ -28,7 +25,7 @@ public class BlackPawn extends Piece {
     }
 
     public void create(Batch batch){
-
+        creat();
         y= 0;
         for(int j = 1; j <=2; j++) {
             if(j==1){
@@ -36,7 +33,7 @@ public class BlackPawn extends Piece {
             for (int i = 0; i < 4; i++) {
             /*pawn[i].setPosition(x, 100);
             pawn[i].setSize(100,100);
-            pawn[i].draw(batch);*/
+            pawn[i].draw(batch);
 
 
                     draw(batch, blackpawn[i], x, y);
@@ -46,7 +43,7 @@ public class BlackPawn extends Piece {
             }
             else {
                 x=100;
-                for (int i = 0; i < 4; i++) {
+                for (int i = 4; i < 8; i++) {
                     draw(batch, blackpawn[i], x, y);
                     x = x + 200;
                 }
@@ -67,6 +64,7 @@ public class BlackPawn extends Piece {
     {
 
         for(int i = 0; i < 8; i++) {
+
             xp = blackpawn[i].getX();
             yp = blackpawn[i].getY();
             System.out.println("x1: " + xp);
@@ -101,7 +99,7 @@ public class BlackPawn extends Piece {
                 p.setSize(100,100);
                 p.draw(batch);
             }
-        }*/
+        }
     }
 
     public void moveLeft(GameObject p, Batch batch){
@@ -128,5 +126,5 @@ public class BlackPawn extends Piece {
         return bool;
 
     }
-
+    */
 }
