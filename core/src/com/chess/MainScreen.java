@@ -49,7 +49,7 @@ public class MainScreen implements Screen, InputProcessor {
         batch.begin();
 
         sprite.setSize(800,800);
-        sprite.draw(batch);
+        //sprite.draw(batch);
         game.draw(batch);
         batch.end();
 
@@ -112,7 +112,7 @@ public class MainScreen implements Screen, InputProcessor {
                 //bp.checkPosition(screenX,(800-screenY));
                 //board.checkPosition(screenX,(800-screenY));
                 x = screenX;
-                y  = 800 -screenY;
+                y  =800- screenY;
                 game.click(x,y);
             }
 
