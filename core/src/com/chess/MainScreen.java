@@ -47,18 +47,10 @@ public class MainScreen implements Screen, InputProcessor {
     public void render(float delta) {
 
         batch.begin();
-
         sprite.setSize(800,800);
         //sprite.draw(batch);
         game.draw(batch);
         batch.end();
-
-
-        //board.update(isclick);
-
-
-
-
     }
 
     @Override
@@ -109,11 +101,9 @@ public class MainScreen implements Screen, InputProcessor {
             if (button == Input.Buttons.LEFT) {
 
                 System.out.println("Pozycja: " + screenX + " , " + (800 - screenY));
-                //bp.checkPosition(screenX,(800-screenY));
-                //board.checkPosition(screenX,(800-screenY));
                 x = screenX;
                 y  =800- screenY;
-                game.click(x,y);
+                game.move(x,y);
             }
 
 

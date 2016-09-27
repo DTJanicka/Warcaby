@@ -28,7 +28,7 @@ public class Board {
     }
 
 
-    public void creat() {
+    private void creat() {
         tgo = new GameObject[8][8];
         black = new Texture(Gdx.files.internal("black.jpg"));
         white = new Texture(Gdx.files.internal("white.jpg"));
@@ -112,13 +112,12 @@ public class Board {
     /**funkcja rusz pionkiem*/
     public void move(GameObject field, GameObject nextfield){
         p = getPawn(field);
+        field.pawn = null;
         setPawn(nextfield, p);
-
     }
 
     /**przesyłanie do kontrolera aktualnego modelu*/
     public GameObject[][] send(){
-
         return tgo;
     }
 
