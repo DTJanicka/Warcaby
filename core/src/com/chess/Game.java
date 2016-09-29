@@ -109,6 +109,8 @@ public class Game {
         }
         else {  /** dostaje współrzędne 2 kliknięcia */
             System.out.println("drugie kliknięcie");
+            System.out.println("index2[0]: "+ index2[0]+" index2[1]: "+ index2[1]);
+            System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
             if (round) {
                 if (cangowhite()) {
                     board.move(tgo[index2[0]][index2[1]], tgo[index[0]][index[1]]);
@@ -135,21 +137,27 @@ public class Game {
         System.out.println("Plansza po tablicy indeksów: "+index[0]+index[1]);
         if (index[1]==0){
             System.out.println("Po 1 ifie");
-            if (board.getPawn(tgo[(index[0]+1)][1])== null || board.getPawn(tgo[(index[0]+1)][1]).iswhite != round){
+            if (board.getPawn(tgo[(index[0]+1)][1])== null){
                 System.out.println("Może się ruszyć");
                 return true;
+            }
+            else if(index2[0]+2==index[0] && index2[1] + 2==index[1]) {
+                if(board.getPawn(tgo[(index[0]+1)][1])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
             }
         }
         else if (index[1] >0 && index[1] <7){
             System.out.println("Po 2 ifie");
-            if (board.getPawn(tgo[(index[0]+1)][(index[1]-1)])== null || board.getPawn(tgo[(index[0]+1)][(index[1]+1)])== null || board.getPawn(tgo[(index[0]+1)][(index[1]-1)]).iswhite != round || board.getPawn(tgo[(index[0]+1)][(index[1]+1)]).iswhite != round){
+            if (board.getPawn(tgo[(index[0]+1)][(index[1]-1)])== null || board.getPawn(tgo[(index[0]+1)][(index[1]+1)])== null){
                 System.out.println("Może się ruszyć");
                 return true;
             }
         }
         else if (index[1] == 7){
             System.out.println("Po 3 ifie");
-            if (board.getPawn(tgo[(index[0]+1)][6])== null || board.getPawn(tgo[(index[0]+1)][6]).iswhite != round){
+            if (board.getPawn(tgo[(index[0]+1)][6])== null ){
                 System.out.println("Może się ruszyć");
                 return true;
             }
@@ -165,21 +173,21 @@ public class Game {
         System.out.println("Plansza po tablicy indeksów: "+index[0]+index[1]);
         if (index[1]==0){
             System.out.println("Po 1 ifie");
-            if (board.getPawn(tgo[(index[0]-1)][1])== null || board.getPawn(tgo[(index[0]-1)][1]).iswhite != round){
+            if (board.getPawn(tgo[(index[0]-1)][1])== null ){
                 System.out.println("Może się ruszyć");
                 return true;
             }
         }
         else if (index[1] >0 && index[1] <7){
             System.out.println("Po 2 ifie");
-            if (board.getPawn(tgo[(index[0]-1)][(index[1]-1)])== null || board.getPawn(tgo[(index[0]-1)][(index[1]+1)])== null || board.getPawn(tgo[(index[0]-1)][(index[1]-1)]).iswhite != round || board.getPawn(tgo[(index[0]-1)][(index[1]+1)]).iswhite != round){
+            if (board.getPawn(tgo[(index[0]-1)][(index[1]-1)])== null || board.getPawn(tgo[(index[0]-1)][(index[1]+1)])== null){
                 System.out.println("Może się ruszyć");
                 return true;
             }
         }
         else if (index[1] == 7){
             System.out.println("Po 3 ifie");
-            if (board.getPawn(tgo[(index[0]-1)][6])== null || board.getPawn(tgo[(index[0]-1)][6]).iswhite != round){
+            if (board.getPawn(tgo[(index[0]-1)][6])== null){
                 System.out.println("Może się ruszyć");
                 return true;
             }
@@ -189,7 +197,7 @@ public class Game {
     }
 
     private boolean cangowhite(){ /** sprawdzam czy jest to plansza na którą mogę się ruszyć */
-        System.out.println("Funkcja cango");
+        System.out.println("Funkcja cangowhite");
         System.out.println("index2[0]: "+ index2[0]+" index2[1]: "+ index2[1]);
         System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
         if ((index2[0]+1) == index[0]){
@@ -203,12 +211,26 @@ public class Game {
                 return true;
             }
         }
+        else if(index2[0]+2==index[0]){
+            System.out.println("Po pierwszym ifie indeksowym");
+            if ((index2[1]-2) == index[1]) {
+                System.out.println("Po drugim ifie indeksowym (index2[0]-2) == index[0])");
+                tgo[(index2[0]+1)][(index2[1]-1)].pawn=null;
+
+                return true;
+            }
+            else if ((index2[1]+2) ==index[1]){
+                System.out.println("Po drugim ifie indeksowym (index2[0]+2) ==index[0])");
+                tgo[(index2[0]+1)][(index2[1]+1)].pawn=null;
+                return true;
+            }
+        }
         System.out.println("Coś w ifach poszło nie tak");
         return false;
     }
 
     private boolean cangoblack(){ /** sprawdzam czy jest to plansza na którą mogę się ruszyć */
-        System.out.println("Funkcja cango");
+        System.out.println("Funkcja cangoblack");
         System.out.println("index2[0]: "+ index2[0]+" index2[1]: "+ index2[1]);
         System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
         if ((index2[0]-1) == index[0]){
@@ -216,6 +238,20 @@ public class Game {
             if ((index2[1]+1) == index[1] || (index2[1]-1) ==index[1])
                 System.out.println("Po drugim ifie indeksowym");
             return true;
+        }
+        else if(index2[0]-2==index[0]){
+            System.out.println("Po pierwszym ifie indeksowym");
+            if ((index2[1]-2) == index[1]) {
+                System.out.println("Po drugim ifie indeksowym (index2[0]-2) == index[0])");
+                tgo[(index2[0]-1)][(index2[1]-1)].pawn=null;
+
+                return true;
+            }
+            else if ((index2[1]+2) ==index[1]){
+                System.out.println("Po drugim ifie indeksowym (index2[0]+2) ==index[0])");
+                tgo[(index2[0]-1)][(index2[1]+1)].pawn=null;
+                return true;
+            }
         }
         System.out.println("Coś w ifach poszło nie tak");
         return false;
