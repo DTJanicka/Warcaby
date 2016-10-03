@@ -6,99 +6,111 @@ import com.badlogic.gdx.graphics.Texture;
 
 /**
  * author: dorota
- * date: 07.07.2016
  */
 
 public class Board {
-    private Texture black;
-    private Texture white;
-    private Texture bpawn;
-    private Texture wpawn;
-    private int x,y;
-    private float xp, yp;
-    private GameObject [][] tgo;
-    private GameObject [] pawn;
-    private GameObject p;
+    private Texture blackField;
+    private Texture whiteField;
+    private Texture blackpawn;
+    private Texture whitepawn;
+    private Texture blackqueen;
+    private Texture whitequeen;
+    private GameObject [][] fields;
+    private GameObject [] pawns;
+    private GameObject pawn;
+    private GameObject [] queens;
     private int j;
+    private int x;
 
 
     public Board(){
-        creat();
+        create();
         x=0;
     }
 
 
-    private void creat() {
-        tgo = new GameObject[8][8];
-        black = new Texture(Gdx.files.internal("black.jpg"));
-        white = new Texture(Gdx.files.internal("white.jpg"));
+    private void create() {
+        fields = new GameObject[8][8];
+        blackField = new Texture(Gdx.files.internal("black.jpg"));
+        whiteField = new Texture(Gdx.files.internal("white.jpg"));
         for (int i = 0; i < 8; i++) {
             if (i % 2 == 0) {
                 for (int j = 0; j < 8; j++) {
                     if (j % 2 == 0) {
-                        tgo[i][j] = new GameObject(black);
+                        fields[i][j] = new GameObject(blackField);
 
                     } else {
-                        tgo[i][j] = new GameObject(white);
+                        fields[i][j] = new GameObject(whiteField);
 
                     }
                 }
             } else {
                 for (int j = 0; j < 8; j++) {
                     if (j % 2 == 0) {
-                        tgo[i][j] = new GameObject(white);
+                        fields[i][j] = new GameObject(whiteField);
+
                     } else {
-                        tgo[i][j] = new GameObject(black);
+                        fields[i][j] = new GameObject(blackField);
                     }
                 }
             }
         }
-        pawn = new GameObject[16];
-        bpawn = new Texture(Gdx.files.internal("bpawn.jpg"));
-        wpawn = new Texture(Gdx.files.internal("wpawn.jpg"));
+        pawns = new GameObject[16];
+        blackpawn = new Texture(Gdx.files.internal("bpawn.jpg"));
+        whitepawn = new Texture(Gdx.files.internal("wpawn.jpg"));
         for (int i = 0; i < 16; i++) {
             if (i < 8) {
 
-                pawn[i] = new GameObject(wpawn);
-                pawn[i].iswhite = true;
-                pawn[i].ispawn = true;
+                pawns[i] = new GameObject(whitepawn);
+                pawns[i].iswhite = true;
+                pawns[i].ispawn = true;
 
             } else {
 
-                pawn[i] = new GameObject(bpawn);
-                pawn[i].iswhite = false;
-                pawn[i].ispawn = true;
+                pawns[i] = new GameObject(blackpawn);
+                pawns[i].iswhite = false;
+                pawns[i].ispawn = true;
 
             }
         }
 
         /** dodanie białych pionów do planszy */
+        addWhitePawns();
+        /** dodanie czarnych pionów do planszy */
+        addBlackPawns();
+
+        whitequeen = new Texture(Gdx.files.internal("wqueen.jpg"));
+        blackqueen = new Texture(Gdx.files.internal("bqueen.jpg"));
+        queens = new GameObject[2];
+        queens[0] = new GameObject(whitequeen);
+        queens[1] = new GameObject(blackqueen);
+    }
+
+    private void addWhitePawns(){
         j = 0;
         for (int i = 0; i < 4; i++) {
-            setPawn(tgo[0][j], pawn[i]);
-
-
+            setPawn(fields[0][j], pawns[i]);
             j = j + 2;
         }
         j = 1;
+        x = x+1;
         for (int i = 4; i < 8; i++) {
-            setPawn(tgo[1][j], pawn[i]);
-
+            setPawn(fields[1][j], pawns[i]);
             j = j + 2;
         }
+    }
 
-        /** dodanie czarnych pionów do planszy */
+    private void addBlackPawns(){
         j = 0;
         for (int i = 8; i < 12; i++) {
-            setPawn(tgo[6][j], pawn[i]);
+            setPawn(fields[6][j], pawns[i]);
             j = j + 2;
         }
         j = 1;
         for (int i = 12; i < 16; i++) {
-            setPawn(tgo[7][j], pawn[i]);
+            setPawn(fields[7][j], pawns[i]);
             j = j + 2;
         }
-
     }
 
     public void setPawn(GameObject field, GameObject pawn){
@@ -110,17 +122,29 @@ public class Board {
     }
 
     /**funkcja rusz pionkiem*/
-    public void move(GameObject field, GameObject nextfield){
-        p = getPawn(field);
+    public void moveFigure(GameObject field, GameObject nextfield){
+        pawn = getPawn(field);
         field.pawn = null;
-        setPawn(nextfield, p);
+        setPawn(nextfield, pawn);
     }
 
     /**przesyłanie do kontrolera aktualnego modelu*/
     public GameObject[][] send(){
-        return tgo;
+        return fields;
     }
 
-
+    /**mianowanie na damkę*/
+    public void setQuenn(GameObject field){
+        pawn = getPawn(field);
+        pawn.ispawn = false;
+        if(pawn.iswhite){
+            pawn = null;
+            pawn = queens[0];
+        }
+        else {
+            pawn = null;
+            pawn = queens[1];
+        }
+    }
 }
 

@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class Game {
 
     private Board board;
-    private GameObject [][] tgo;
-    private GameObject go;
+    private GameObject [][] fields;
+    private GameObject field;
     private GameObject pawn;
     private int xp,yp; /**wybierania pozycji na planszy*/
     private float xd, yd; /**określanie położenia planszy i pionów*/
@@ -22,7 +22,7 @@ public class Game {
 
     public Game(){
         board = new Board();
-        tgo = new GameObject[8][8];
+        fields = new GameObject[8][8];
         coordinates = new int[2];
         index = new int[]{0,0};
         index2 = new int[]{0,0};
@@ -32,22 +32,22 @@ public class Game {
 
     public void draw(Batch batch){
 
-        tgo = board.send();
+        fields = board.send();
         yp = 0;
         for(int i = 0; i <8; i++){
             xp = 0;
 
             for (int j = 0; j <8; j++) {
 
-                tgo[i][j].setPosition(xp, yp);
-                tgo[i][j].setSize(100,100);
-                tgo[i][j].draw(batch);
-                go = board.getPawn(tgo[i][j]);
+                fields[i][j].setPosition(xp, yp);
+                fields[i][j].setSize(100,100);
+                fields[i][j].draw(batch);
+                pawn = board.getPawn(fields[i][j]);
 
-                if(go != null){
-                    go.setPosition(xp,yp);
-                    go.setSize(100,100);
-                    go.draw(batch);
+                if(pawn != null){
+                    pawn.setPosition(xp,yp);
+                    pawn.setSize(100,100);
+                    pawn.draw(batch);
                 }
                 xp = xp + 100;
             }
@@ -56,18 +56,18 @@ public class Game {
     }
 
     private GameObject checkPosition(int x, int y){ /**  sprawdzenie pozycji oraz przypisanie indeksów wybranej planszy to tablicy indeksów */
-        tgo = board.send();
+        fields = board.send();
         for (int i = 0; i<8; i++) {
             for (int j = 0; j <8; j++) {
-                xd = tgo[i][j].getX();
-                yd = tgo[i][j].getY();
+                xd = fields[i][j].getX();
+                yd = fields[i][j].getY();
                 if (xd < x && x < (xd + 100) && yd < y && y < (yd + 100)) {
                     System.out.println("Została kliknięta plansza " + i + j);
                     index[0] = i;
                     index[1] = j;
                     System.out.println("index[0] " + index[0]);
                     System.out.println("index[1] " + index[1]);
-                    return tgo[i][j];
+                    return fields[i][j];
                 }
             }
         }
@@ -76,10 +76,10 @@ public class Game {
 
     public void move(int x, int y){
         System.out.println("Firstclick: "+firstclick);
-        go = checkPosition(x,y);  /** 2) sprawdzam co to za plansza */
+        field = checkPosition(x,y);  /** 2) sprawdzam co to za plansza */
         if (firstclick){ /** 1) dostaje wspórzędne 1kliknięcia */
 
-            pawn = board.getPawn(go); /** 3) sprawdzam czy jest na niej pionek */
+            pawn = board.getPawn(field); /** 3) sprawdzam czy jest na niej pionek */
             System.out.println("Pawn: " + pawn);
             if (pawn != null || pawn.iswhite != round){
                 System.out.println("iswhite: " + pawn.iswhite);
@@ -113,17 +113,34 @@ public class Game {
             System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
             if (round) {
                 if (cangowhite()) {
-                    board.move(tgo[index2[0]][index2[1]], tgo[index[0]][index[1]]);
-                    firstclick = true;
-                    round = false;
+                    if (index[0]==7){
+                        board.setQuenn(fields[index2[0]][index2[1]]);
+                        board.moveFigure(fields[index2[0]][index2[1]], fields[index[0]][index[1]]);
+                        firstclick = true;
+                        round = false;
+                    }
+                    else {
+                        board.moveFigure(fields[index2[0]][index2[1]], fields[index[0]][index[1]]);
+                        firstclick = true;
+                        round = false;
+                    }
 
                 }
             }
             else {
                 if(cangoblack()){
-                    board.move(tgo[index2[0]][index2[1]], tgo[index[0]][index[1]]);
-                    firstclick = true;
-                    round = true;
+                    if (index[0]==0){
+
+                        board.moveFigure(fields[index2[0]][index2[1]], fields[index[0]][index[1]]);
+                        board.setQuenn(fields[index[0]][index[1]]);
+                        firstclick = true;
+                        round = true;
+                    }
+                    else {
+                        board.moveFigure(fields[index2[0]][index2[1]], fields[index[0]][index[1]]);
+                        firstclick = true;
+                        round = true;
+                    }
                 }
             }
         }
@@ -131,18 +148,19 @@ public class Game {
 
     private boolean canmovewhite(int x, int y){ /**dostaję plansze */
         checkPosition(x,y);
-        System.out.println("Funkcja canmove");
+        System.out.println("Funkcja canmovewhite");
         /** index[0] = i; index[1] = j */
 
         System.out.println("Plansza po tablicy indeksów: "+index[0]+index[1]);
         if (index[1]==0){
             System.out.println("Po 1 ifie");
-            if (board.getPawn(tgo[(index[0]+1)][1])== null){
+            if (board.getPawn(fields[(index[0]+1)][1])== null){
                 System.out.println("Może się ruszyć");
                 return true;
             }
-            else if(index2[0]+2==index[0] && index2[1] + 2==index[1]) {
-                if(board.getPawn(tgo[(index[0]+1)][1])!= null){
+            else if(board.getPawn(fields[(index[0]+2)][(index[1]+2)]) ==null) {
+                System.out.println("Wchodzę do pętli: else if(index2[0]+2==index[0] && index2[1]+2==index[1])");
+                if(board.getPawn(fields[(index[0]+1)][1])!= null){
                     System.out.println("Można wykonać bicie");
                     return true;
                 }
@@ -150,16 +168,36 @@ public class Game {
         }
         else if (index[1] >0 && index[1] <7){
             System.out.println("Po 2 ifie");
-            if (board.getPawn(tgo[(index[0]+1)][(index[1]-1)])== null || board.getPawn(tgo[(index[0]+1)][(index[1]+1)])== null){
+            if (board.getPawn(fields[(index[0]+1)][(index[1]-1)])== null || board.getPawn(fields[(index[0]+1)][(index[1]+1)])== null){
                 System.out.println("Może się ruszyć");
                 return true;
+            }
+            else if(board.getPawn(fields[(index[0]+2)][(index[1]-2)])== null){
+                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]+2)][(index[1]-2)])== null)");
+                if (board.getPawn(fields[(index[0]+1)][(index[1]-1)])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
+            }
+            else if(board.getPawn(fields[(index[0]+2)][(index[1]+2)])== null){
+                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]+2)][(index[1]-2)])== null)");
+                if (board.getPawn(fields[(index[0]+1)][(index[1]+1)])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
             }
         }
         else if (index[1] == 7){
             System.out.println("Po 3 ifie");
-            if (board.getPawn(tgo[(index[0]+1)][6])== null ){
+            if (board.getPawn(fields[(index[0]+1)][6])== null ){
                 System.out.println("Może się ruszyć");
                 return true;
+            }
+            else if(board.getPawn(fields[(index[0]+2)][(index[1]-2)]) ==null){
+                if(board.getPawn(fields[(index[0]+1)][6])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
             }
         }
         System.out.println("Nie może się ruszyć");
@@ -167,29 +205,56 @@ public class Game {
     }
     private boolean canmoveblack(int x, int y){ /**dostaję plansze */
         checkPosition(x,y);
-        System.out.println("Funkcja canmove");
+        System.out.println("Funkcja canmoveblack");
         /** index[0] = i; index[1] = j */
 
         System.out.println("Plansza po tablicy indeksów: "+index[0]+index[1]);
         if (index[1]==0){
             System.out.println("Po 1 ifie");
-            if (board.getPawn(tgo[(index[0]-1)][1])== null ){
+            if (board.getPawn(fields[(index[0]-1)][1])== null ){
                 System.out.println("Może się ruszyć");
                 return true;
+            }
+            else if(board.getPawn(fields[(index[0]-2)][(index[1]+2)]) ==null) {
+                System.out.println("Wchodzę do pętli: else if(index2[0]-2==index[0] && index2[1]+2==index[1])");
+                if(board.getPawn(fields[(index[0]-1)][1])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
             }
         }
         else if (index[1] >0 && index[1] <7){
             System.out.println("Po 2 ifie");
-            if (board.getPawn(tgo[(index[0]-1)][(index[1]-1)])== null || board.getPawn(tgo[(index[0]-1)][(index[1]+1)])== null){
+            if (board.getPawn(fields[(index[0]-1)][(index[1]-1)])== null || board.getPawn(fields[(index[0]-1)][(index[1]+1)])== null){
                 System.out.println("Może się ruszyć");
                 return true;
+            }
+            else if(board.getPawn(fields[(index[0]-2)][(index[1]-2)])== null){
+                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]-2)][(index[1]-2)])== null)");
+                if (board.getPawn(fields[(index[0]-1)][(index[1]-1)])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
+            }
+            else if(board.getPawn(fields[(index[0]-2)][(index[1]+2)])== null){
+                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]-2)][(index[1]-2)])== null)");
+                if (board.getPawn(fields[(index[0]-1)][(index[1]+1)])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
             }
         }
         else if (index[1] == 7){
             System.out.println("Po 3 ifie");
-            if (board.getPawn(tgo[(index[0]-1)][6])== null){
+            if (board.getPawn(fields[(index[0]-1)][6])== null){
                 System.out.println("Może się ruszyć");
                 return true;
+            }
+            else if(board.getPawn(fields[(index[0]-2)][(index[1]-2)]) ==null){
+                if(board.getPawn(fields[(index[0]-1)][6])!= null){
+                    System.out.println("Można wykonać bicie");
+                    return true;
+                }
             }
         }
         System.out.println("Nie może się ruszyć");
@@ -215,13 +280,12 @@ public class Game {
             System.out.println("Po pierwszym ifie indeksowym");
             if ((index2[1]-2) == index[1]) {
                 System.out.println("Po drugim ifie indeksowym (index2[0]-2) == index[0])");
-                tgo[(index2[0]+1)][(index2[1]-1)].pawn=null;
-
+                fields[(index2[0]+1)][(index2[1]-1)].pawn=null;
                 return true;
             }
             else if ((index2[1]+2) ==index[1]){
                 System.out.println("Po drugim ifie indeksowym (index2[0]+2) ==index[0])");
-                tgo[(index2[0]+1)][(index2[1]+1)].pawn=null;
+                fields[(index2[0]+1)][(index2[1]+1)].pawn=null;
                 return true;
             }
         }
@@ -243,16 +307,17 @@ public class Game {
             System.out.println("Po pierwszym ifie indeksowym");
             if ((index2[1]-2) == index[1]) {
                 System.out.println("Po drugim ifie indeksowym (index2[0]-2) == index[0])");
-                tgo[(index2[0]-1)][(index2[1]-1)].pawn=null;
+                fields[(index2[0]-1)][(index2[1]-1)].pawn=null;
 
                 return true;
             }
             else if ((index2[1]+2) ==index[1]){
                 System.out.println("Po drugim ifie indeksowym (index2[0]+2) ==index[0])");
-                tgo[(index2[0]-1)][(index2[1]+1)].pawn=null;
+                fields[(index2[0]-1)][(index2[1]+1)].pawn=null;
                 return true;
             }
         }
+
         System.out.println("Coś w ifach poszło nie tak");
         return false;
     }
