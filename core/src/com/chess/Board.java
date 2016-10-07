@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 
 /**
- * author: dorota
+ * @author: DorotaJanicka
  */
 
 public class Board {
@@ -36,22 +36,11 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             if (i % 2 == 0) {
                 for (int j = 0; j < 8; j++) {
-                    if (j % 2 == 0) {
-                        fields[i][j] = new GameObject(blackField);
-
-                    } else {
-                        fields[i][j] = new GameObject(whiteField);
-
-                    }
+                    fields[i][j] = new GameObject(j%2 == 0 ? blackField : whiteField);
                 }
             } else {
                 for (int j = 0; j < 8; j++) {
-                    if (j % 2 == 0) {
-                        fields[i][j] = new GameObject(whiteField);
-
-                    } else {
-                        fields[i][j] = new GameObject(blackField);
-                    }
+                    fields[i][j] = new GameObject(j%2 == 0 ? whiteField : blackField);
                 }
             }
         }
@@ -138,12 +127,11 @@ public class Board {
         pawn = getPawn(field);
         pawn.ispawn = false;
         if(pawn.iswhite){
-            pawn = null;
-            pawn = queens[0];
+            setPawn(field, queens[0]);
+
         }
         else {
-            pawn = null;
-            pawn = queens[1];
+            setPawn(field, queens[1]);
         }
     }
 }
