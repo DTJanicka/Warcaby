@@ -2,17 +2,14 @@ package com.chess;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-/**
- * @author: DorotaJanicka
- */
 public class Game {
 
     private Board board;
     public CanMove canMove;
     public CanGo canGo;
-    private GameObject [][] fields;
-    private GameObject field;
-    private GameObject pawn;
+    private Field [][] fields;
+    private Field field;
+    private Pawn pawn;
     private int xp,yp; /**wybierania pozycji na planszy*/
     private float xd, yd; /**określanie położenia planszy i pionów*/
     private boolean round; /** białe = true; czarne = false */
@@ -25,7 +22,7 @@ public class Game {
         board = new Board();
         canMove = new CanMove();
         canGo = new CanGo();
-        fields = new GameObject[8][8];
+        fields = new Field[8][8];
         coordinates = new int[2];
         index = new int[]{0,0};
         index2 = new int[]{0,0};
@@ -58,7 +55,7 @@ public class Game {
         }
     }
 
-    public GameObject checkPosition(int x, int y){ /**  sprawdzenie pozycji oraz przypisanie indeksów wybranej planszy to tablicy indeksów */
+    public Field checkPosition(int x, int y){ /**  sprawdzenie pozycji oraz przypisanie indeksów wybranej planszy to tablicy indeksów */
         fields = board.send();
         for (int i = 0; i<8; i++) {
             for (int j = 0; j <8; j++) {
@@ -84,12 +81,12 @@ public class Game {
 
             pawn = board.getPawn(field); /** 3) sprawdzam czy jest na niej pionek */
             System.out.println("Pawn: " + pawn);
-            if (pawn != null || pawn.iswhite != round){
-                System.out.println("iswhite: " + pawn.iswhite);
+            if (pawn != null || pawn.isWhite != round){
+                System.out.println("iswhite: " + pawn.isWhite);
                 System.out.println("round: " + round);
-                if(pawn.iswhite == round){
+                if(pawn.isWhite == round){
                     if (round) {
-                        if (canMove.White(index[0], index[1])) {
+                        if (canMove.white(index[0], index[1])) {
                             coordinates[0] = x;
                             coordinates[1] = y;
                             index2[0] = index[0]; /** przypisuje indeksy poprzedniego ruchu do niezależnej tablicy */
@@ -98,7 +95,7 @@ public class Game {
                         }
                     }
                     else {
-                        if (canMove.Black(index[0],index[1])) {
+                        if (canMove.black(index[0],index[1])) {
                             coordinates[0] = x;
                             coordinates[1] = y;
                             index2[0] = index[0]; /** przypisuje indeksy poprzedniego ruchu do niezależnej tablicy */
@@ -115,9 +112,9 @@ public class Game {
             System.out.println("index2[0]: "+ index2[0]+" index2[1]: "+ index2[1]);
             System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
             if (round) {
-                if (canGo.White(index2[0], index2[1], index[0], index[1], fields)) {
+                if (canGo.white(index2[0], index2[1], index[0], index[1], fields)) {
                     if (index[0]==7){
-                        board.setQuenn(fields[index2[0]][index2[1]]);
+                        //board.setQueen(fields[index2[0]][index2[1]]);
                         board.moveFigure(fields[index2[0]][index2[1]], fields[index[0]][index[1]]);
                         firstclick = true;
                         round = false;
@@ -131,11 +128,11 @@ public class Game {
                 }
             }
             else {
-                if(canGo.Black(index2[0], index2[1], index[0], index[1], fields)){
+                if(canGo.black(index2[0], index2[1], index[0], index[1], fields)){
                     if (index[0]==0){
 
                         board.moveFigure(fields[index2[0]][index2[1]], fields[index[0]][index[1]]);
-                        board.setQuenn(fields[index[0]][index[1]]);
+                        //board.setQueen(fields[index[0]][index[1]]);
                         firstclick = true;
                         round = true;
                     }

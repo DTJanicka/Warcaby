@@ -5,16 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-/**
- * @author: Dorota Janicka
- * @since: 07.07.2016
- */
 public class GameObject extends Sprite {
-
+/*
     protected GameObject pawn;
     protected boolean iswhite;
     protected boolean ispawn;
-
+*/
     public GameObject() {
     }
 

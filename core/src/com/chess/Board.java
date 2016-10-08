@@ -3,24 +3,17 @@ package com.chess;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-
-/**
- * @author: DorotaJanicka
- */
-
 public class Board {
-    private Texture blackField;
-    private Texture whiteField;
-    private Texture blackpawn;
-    private Texture whitepawn;
-    private Texture blackqueen;
-    private Texture whitequeen;
-    private GameObject [][] fields;
-    private GameObject [] pawns;
-    private GameObject pawn;
+    private Texture blackQueen;
+    private Texture whiteQueen;
+    private Field [][] fields;
+    private Pawn [] pawns;
+    private Pawn pawn;
+    private Field field;
     private GameObject [] queens;
     private int j;
     private int x;
+    public static final int squaresInRow = 8;
 
 
     public Board(){
@@ -28,51 +21,23 @@ public class Board {
         x=0;
     }
 
-
     private void create() {
-        fields = new GameObject[8][8];
-        blackField = new Texture(Gdx.files.internal("black.jpg"));
-        whiteField = new Texture(Gdx.files.internal("white.jpg"));
-        for (int i = 0; i < 8; i++) {
-            if (i % 2 == 0) {
-                for (int j = 0; j < 8; j++) {
-                    fields[i][j] = new GameObject(j%2 == 0 ? blackField : whiteField);
-                }
-            } else {
-                for (int j = 0; j < 8; j++) {
-                    fields[i][j] = new GameObject(j%2 == 0 ? whiteField : blackField);
-                }
-            }
-        }
-        pawns = new GameObject[16];
-        blackpawn = new Texture(Gdx.files.internal("bpawn.jpg"));
-        whitepawn = new Texture(Gdx.files.internal("wpawn.jpg"));
-        for (int i = 0; i < 16; i++) {
-            if (i < 8) {
+        field = new Field();
+        field.create();
+        pawn = new Pawn();
+        pawn.create();
+        fields = field.send();
+        pawns = pawn.send();
 
-                pawns[i] = new GameObject(whitepawn);
-                pawns[i].iswhite = true;
-                pawns[i].ispawn = true;
-
-            } else {
-
-                pawns[i] = new GameObject(blackpawn);
-                pawns[i].iswhite = false;
-                pawns[i].ispawn = true;
-
-            }
-        }
-
-        /** dodanie białych pionów do planszy */
         addWhitePawns();
-        /** dodanie czarnych pionów do planszy */
+
         addBlackPawns();
 
-        whitequeen = new Texture(Gdx.files.internal("wqueen.jpg"));
-        blackqueen = new Texture(Gdx.files.internal("bqueen.jpg"));
+        whiteQueen = new Texture(Gdx.files.internal("wqueen.jpg"));
+        blackQueen = new Texture(Gdx.files.internal("bqueen.jpg"));
         queens = new GameObject[2];
-        queens[0] = new GameObject(whitequeen);
-        queens[1] = new GameObject(blackqueen);
+        queens[0] = new GameObject(whiteQueen);
+        queens[1] = new GameObject(blackQueen);
     }
 
     private void addWhitePawns(){
@@ -102,28 +67,32 @@ public class Board {
         }
     }
 
-    public void setPawn(GameObject field, GameObject pawn){
+    public void setPawn(Field field, Pawn pawn){
         field.pawn = pawn;
     }
 
-    public GameObject getPawn(GameObject field){
+    public Pawn getPawn(Field field){
             return field.pawn;
     }
 
-    /**funkcja rusz pionkiem*/
-    public void moveFigure(GameObject field, GameObject nextfield){
+    public void moveFigure(Field field, Field nextfield){
         pawn = getPawn(field);
         field.pawn = null;
         setPawn(nextfield, pawn);
     }
 
-    /**przesyłanie do kontrolera aktualnego modelu*/
-    public GameObject[][] send(){
+    /**
+     * przesyłanie do kontrolera aktualnego modelu
+     */
+    public Field[][] send(){
         return fields;
     }
 
-    /**mianowanie na damkę*/
-    public void setQuenn(GameObject field){
+    /**
+     * mianowanie na damkę
+     */
+    /*
+    public void setQueen(GameObject field){
         pawn = getPawn(field);
         pawn.ispawn = false;
         if(pawn.iswhite){
@@ -134,5 +103,6 @@ public class Board {
             setPawn(field, queens[1]);
         }
     }
+    */
 }
 

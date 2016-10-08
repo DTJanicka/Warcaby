@@ -10,13 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-//import com.badlogic.gdx.graphics.g2d.Sprite;
-
-/**
- * author: Dorota Janicka
- * date: 07.07.2016
- */
-
 public class MainScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
     private Board board;
@@ -25,9 +18,6 @@ public class MainScreen implements Screen, InputProcessor {
 
     float[] possition;
     private int x,y;
-
-
-
 
     @Override
     public void show() {
@@ -40,8 +30,6 @@ public class MainScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
 
     }
-
-
 
     @Override
     public void render(float delta) {
@@ -105,11 +93,7 @@ public class MainScreen implements Screen, InputProcessor {
                 y  =800- screenY;
                 game.move(x,y);
             }
-
-
             return false;
-
-
     }
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
