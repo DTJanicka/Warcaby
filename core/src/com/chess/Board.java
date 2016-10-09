@@ -11,10 +11,7 @@ public class Board {
     private Pawn pawn;
     private Field field;
     private GameObject [] queens;
-    private int j;
     private int x;
-    public static final int squaresInRow = 8;
-
 
     public Board(){
         create();
@@ -41,7 +38,7 @@ public class Board {
     }
 
     private void addWhitePawns(){
-        j = 0;
+         int j = 0;
         for (int i = 0; i < 4; i++) {
             setPawn(fields[0][j], pawns[i]);
             j = j + 2;
@@ -55,7 +52,7 @@ public class Board {
     }
 
     private void addBlackPawns(){
-        j = 0;
+        int j = 0;
         for (int i = 8; i < 12; i++) {
             setPawn(fields[6][j], pawns[i]);
             j = j + 2;

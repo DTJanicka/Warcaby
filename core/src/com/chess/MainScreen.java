@@ -12,11 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
-    private Board board;
     private Sprite sprite;
     private Game game;
-
-    float[] possition;
     private int x,y;
 
     @Override
@@ -36,7 +33,6 @@ public class MainScreen implements Screen, InputProcessor {
 
         batch.begin();
         sprite.setSize(800,800);
-        //sprite.draw(batch);
         game.draw(batch);
         batch.end();
     }

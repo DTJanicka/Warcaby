@@ -10,8 +10,8 @@ public class Game {
     private Field [][] fields;
     private Field field;
     private Pawn pawn;
-    private int xp,yp; /**wybierania pozycji na planszy*/
-    private float xd, yd; /**określanie położenia planszy i pionów*/
+    private int xField, yField; /**wybierania pozycji na planszy*/
+    private float xSquare, ySquare; /**określanie położenia planszy i pionów*/
     private boolean round; /** białe = true; czarne = false */
     private boolean firstclick; /**określam rodzaj kliknięcia 1=true, 2=false*/
     private int[] coordinates;
@@ -33,25 +33,25 @@ public class Game {
     public void draw(Batch batch){
 
         fields = board.send();
-        yp = 0;
+        yField = 0;
         for(int i = 0; i <8; i++){
-            xp = 0;
+            xField = 0;
 
             for (int j = 0; j <8; j++) {
 
-                fields[i][j].setPosition(xp, yp);
+                fields[i][j].setPosition(xField, yField);
                 fields[i][j].setSize(100,100);
                 fields[i][j].draw(batch);
                 pawn = board.getPawn(fields[i][j]);
 
                 if(pawn != null){
-                    pawn.setPosition(xp,yp);
+                    pawn.setPosition(xField, yField);
                     pawn.setSize(100,100);
                     pawn.draw(batch);
                 }
-                xp = xp + 100;
+                xField = xField + 100;
             }
-            yp = yp + 100;
+            yField = yField + 100;
         }
     }
 
@@ -59,9 +59,9 @@ public class Game {
         fields = board.send();
         for (int i = 0; i<8; i++) {
             for (int j = 0; j <8; j++) {
-                xd = fields[i][j].getX();
-                yd = fields[i][j].getY();
-                if (xd < x && x < (xd + 100) && yd < y && y < (yd + 100)) {
+                xSquare = fields[i][j].getX();
+                ySquare = fields[i][j].getY();
+                if (xSquare < x && x < (xSquare + 100) && ySquare < y && y < (ySquare + 100)) {
                     System.out.println("Została kliknięta plansza " + i + j);
                     index[0] = i;
                     index[1] = j;
@@ -145,184 +145,4 @@ public class Game {
             }
         }
     }
-
-    /**
-    private boolean canmovewhite(int x, int y){ /**dostaję plansze
-        checkPosition(x,y);
-        System.out.println("Funkcja canmovewhite");
-        /** index[0] = i; index[1] = j
-
-        System.out.println("Plansza po tablicy indeksów: "+index[0]+index[1]);
-        if (index[1]==0){
-            System.out.println("Po 1 ifie");
-            if (board.getPawn(fields[(index[0]+1)][1])== null){
-                System.out.println("Może się ruszyć");
-                return true;
-            }
-            else if(board.getPawn(fields[(index[0]+2)][(index[1]+2)]) ==null) {
-                System.out.println("Wchodzę do pętli: else if(index2[0]+2==index[0] && index2[1]+2==index[1])");
-                if(board.getPawn(fields[(index[0]+1)][1])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-        }
-        else if (index[1] >0 && index[1] <7){
-            System.out.println("Po 2 ifie");
-            if (board.getPawn(fields[(index[0]+1)][(index[1]-1)])== null || board.getPawn(fields[(index[0]+1)][(index[1]+1)])== null){
-                System.out.println("Może się ruszyć");
-                return true;
-            }
-            else if(board.getPawn(fields[(index[0]+2)][(index[1]-2)])== null){
-                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]+2)][(index[1]-2)])== null)");
-                if (board.getPawn(fields[(index[0]+1)][(index[1]-1)])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-            else if(board.getPawn(fields[(index[0]+2)][(index[1]+2)])== null){
-                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]+2)][(index[1]-2)])== null)");
-                if (board.getPawn(fields[(index[0]+1)][(index[1]+1)])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-        }
-        else if (index[1] == 7){
-            System.out.println("Po 3 ifie");
-            if (board.getPawn(fields[(index[0]+1)][6])== null ){
-                System.out.println("Może się ruszyć");
-                return true;
-            }
-            else if(board.getPawn(fields[(index[0]+2)][(index[1]-2)]) ==null){
-                if(board.getPawn(fields[(index[0]+1)][6])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-        }
-        System.out.println("Nie może się ruszyć");
-        return false;
-    }
-    private boolean canmoveblack(int x, int y){ /**dostaję plansze
-        checkPosition(x,y);
-        System.out.println("Funkcja canmoveblack");
-        /** index[0] = i; index[1] = j
-
-        System.out.println("Plansza po tablicy indeksów: "+index[0]+index[1]);
-        if (index[1]==0){
-            System.out.println("Po 1 ifie");
-            if (board.getPawn(fields[(index[0]-1)][1])== null ){
-                System.out.println("Może się ruszyć");
-                return true;
-            }
-            else if(board.getPawn(fields[(index[0]-2)][(index[1]+2)]) ==null) {
-                System.out.println("Wchodzę do pętli: else if(index2[0]-2==index[0] && index2[1]+2==index[1])");
-                if(board.getPawn(fields[(index[0]-1)][1])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-        }
-        else if (index[1] >0 && index[1] <7){
-            System.out.println("Po 2 ifie");
-            if (board.getPawn(fields[(index[0]-1)][(index[1]-1)])== null || board.getPawn(fields[(index[0]-1)][(index[1]+1)])== null){
-                System.out.println("Może się ruszyć");
-                return true;
-            }
-            else if(board.getPawn(fields[(index[0]-2)][(index[1]-2)])== null){
-                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]-2)][(index[1]-2)])== null)");
-                if (board.getPawn(fields[(index[0]-1)][(index[1]-1)])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-            else if(board.getPawn(fields[(index[0]-2)][(index[1]+2)])== null){
-                System.out.println("Wchodzę do pętli:  else if(board.getPawn(tgo[(index[0]-2)][(index[1]-2)])== null)");
-                if (board.getPawn(fields[(index[0]-1)][(index[1]+1)])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-        }
-        else if (index[1] == 7){
-            System.out.println("Po 3 ifie");
-            if (board.getPawn(fields[(index[0]-1)][6])== null){
-                System.out.println("Może się ruszyć");
-                return true;
-            }
-            else if(board.getPawn(fields[(index[0]-2)][(index[1]-2)]) ==null){
-                if(board.getPawn(fields[(index[0]-1)][6])!= null){
-                    System.out.println("Można wykonać bicie");
-                    return true;
-                }
-            }
-        }
-        System.out.println("Nie może się ruszyć");
-        return false;
-    }
-
-
-    private boolean cangowhite(){  sprawdzam czy jest to plansza na którą mogę się ruszyć
-        System.out.println("Funkcja cangowhite");
-        System.out.println("index2[0]: "+ index2[0]+" index2[1]: "+ index2[1]);
-        System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
-        if ((index2[0]+1) == index[0]){
-            System.out.println("Po pierwszym ifie indeksowym");
-            if ((index2[1]-1) == index[1]) {
-                System.out.println("Po drugim ifie indeksowym (index2[0]-1) == index[0])");
-                return true;
-            }
-            else if ((index2[1]+1) ==index[1]){
-                System.out.println("Po drugim ifie indeksowym (index2[0]+1) ==index[0])");
-                return true;
-            }
-        }
-        else if(index2[0]+2==index[0]){
-            System.out.println("Po pierwszym ifie indeksowym");
-            if ((index2[1]-2) == index[1]) {
-                System.out.println("Po drugim ifie indeksowym (index2[0]-2) == index[0])");
-                fields[(index2[0]+1)][(index2[1]-1)].pawn=null;
-                return true;
-            }
-            else if ((index2[1]+2) ==index[1]){
-                System.out.println("Po drugim ifie indeksowym (index2[0]+2) ==index[0])");
-                fields[(index2[0]+1)][(index2[1]+1)].pawn=null;
-                return true;
-            }
-        }
-        System.out.println("Coś w ifach poszło nie tak");
-        return false;
-    }
-
-    private boolean cangoblack(){ /** sprawdzam czy jest to plansza na którą mogę się ruszyć
-        System.out.println("Funkcja cangoblack");
-        System.out.println("index2[0]: "+ index2[0]+" index2[1]: "+ index2[1]);
-        System.out.println("index[0]: "+index[0]+" index[1]: "+index[1]);
-        if ((index2[0]-1) == index[0]){
-            System.out.println("Po pierwszym ifie indeksowym");
-            if ((index2[1]+1) == index[1] || (index2[1]-1) ==index[1])
-                System.out.println("Po drugim ifie indeksowym");
-            return true;
-        }
-        else if(index2[0]-2==index[0]){
-            System.out.println("Po pierwszym ifie indeksowym");
-            if ((index2[1]-2) == index[1]) {
-                System.out.println("Po drugim ifie indeksowym (index2[0]-2) == index[0])");
-                fields[(index2[0]-1)][(index2[1]-1)].pawn=null;
-
-                return true;
-            }
-            else if ((index2[1]+2) ==index[1]){
-                System.out.println("Po drugim ifie indeksowym (index2[0]+2) ==index[0])");
-                fields[(index2[0]-1)][(index2[1]+1)].pawn=null;
-                return true;
-            }
-        }
-
-        System.out.println("Coś w ifach poszło nie tak");
-        return false;
-    }
-*/
-
 }

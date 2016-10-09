@@ -9,7 +9,7 @@ public class Field extends GameObject{
     private Texture blackField;
     private Texture whiteField;
     private Field [][] fields;
-    public static final int squaresInRow = 8;
+    public static final int SQUARES_IN_ROW = 8;
 
     public Field(){
 
@@ -19,16 +19,16 @@ public class Field extends GameObject{
     }
 
     public void create(){
-        fields = new Field[squaresInRow][squaresInRow];
+        fields = new Field[Field.SQUARES_IN_ROW][Field.SQUARES_IN_ROW];
         blackField = new Texture(Gdx.files.internal("black.jpg"));
         whiteField = new Texture(Gdx.files.internal("white.jpg"));
-        for (int i = 0; i < squaresInRow; i++) {
+        for (int i = 0; i < Field.SQUARES_IN_ROW; i++) {
             if (i % 2 == 0) {
-                for (int j = 0; j < squaresInRow; j++) {
+                for (int j = 0; j < Field.SQUARES_IN_ROW; j++) {
                     fields[i][j] = new Field(j % 2 == 0 ? blackField : whiteField);
                 }
             } else {
-                for (int j = 0; j < squaresInRow; j++) {
+                for (int j = 0; j < Field.SQUARES_IN_ROW; j++) {
                     fields[i][j] = new Field(j % 2 == 0 ? whiteField : blackField);
                 }
             }
